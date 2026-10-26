@@ -1,0 +1,46 @@
+Supabase project: city-ecc-intake (ncwquehhluggrvjzyqga)
+Organization: Nicolas Anema
+Plan: free
+Region: ap-south-1
+Verified: 2026-10-26
+
+Applied sql/001_create_intake_tables.sql through the Supabase migration tool.
+Result: {"success": true}
+
+Executed sql/verify_constraints.sql against the live database.
+Result:
+PASS: three request shapes, nullable plate, false booleans, handoff, and four rejection cases
+
+Read-back verification after rollback:
+requests row_count: 0
+handoffs row_count: 0
+requests rls_enabled: true
+handoffs rls_enabled: true
+
+Verified requests columns:
+id bigint
+request_type text
+conversation_id text
+location text
+callback_phone text
+noise_source text
+vehicle_description text
+license_plate text
+blocking_driveway boolean
+pothole_size text
+hazard_to_traffic boolean
+created_at timestamp with time zone
+
+Verified handoffs columns:
+id bigint
+conversation_id text
+transcript text
+trigger_label text
+created_at timestamp with time zone
+
+Actual Table Editor captures:
+supabase-requests.jpg: Definition view, showing every requests column.
+supabase-handoffs.jpg: Data view, showing every handoffs column.
+
+Failures:
+Zero failures.

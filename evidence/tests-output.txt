@@ -1,0 +1,19 @@
+Python 3.12.10
+$ python -m unittest discover -s tests -v
+
+test_blank_required_and_cross_type_fields_are_both_reported (test_contracts.ContractsTest.test_blank_required_and_cross_type_fields_are_both_reported) ... ok
+test_conflicting_turn_annotations_fail_instead_of_selecting_a_row (test_contracts.ContractsTest.test_conflicting_turn_annotations_fail_instead_of_selecting_a_row) ... ok
+test_every_model_key_is_required (test_contracts.ContractsTest.test_every_model_key_is_required) ... ok
+test_false_is_false_and_invalid_boolean_is_rejected (test_contracts.ContractsTest.test_false_is_false_and_invalid_boolean_is_rejected) ... ok
+test_handoff_trigger_and_label_mismatch_are_failures (test_contracts.ContractsTest.test_handoff_trigger_and_label_mismatch_are_failures) ... ok
+test_missing_chat_fails_acceptance_totals (test_contracts.ContractsTest.test_missing_chat_fails_acceptance_totals) ... ok
+test_original_counts_and_explicit_zero_failures (test_contracts.ContractsTest.test_original_counts_and_explicit_zero_failures) ... ok
+test_unordered_rows_work_but_duplicate_turns_fail (test_contracts.ContractsTest.test_unordered_rows_work_but_duplicate_turns_fail) ... ok
+test_unreadable_plate_accepts_explicit_null_only (test_contracts.ContractsTest.test_unreadable_plate_accepts_explicit_null_only) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.145s
+
+OK
+
+Exit code: 0

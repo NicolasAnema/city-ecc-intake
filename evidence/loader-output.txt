@@ -1,0 +1,71 @@
+Python 3.12.10
+$ python -m ecc_intake.loader
+
+City ECC intake contract validation
+Input: ECC Non-Emergency Intake Test Set (40 Labeled Chats).csv
+SHA-256: 000cc38c40ec129fc0019043115d01ecfc049d2aca419e267a458b9818d39b03
+Resident-turn rows: 80
+Unique chats (grouped by chat_id): 40
+Routine chats: 30
+Handoff chats: 10
+Routine validation: 30 of 30 valid
+
+Routine counts by request type:
+- illegally_parked_vehicle: 10
+- noise_complaint: 10
+- pothole: 10
+
+Handoff counts by trigger label:
+- danger: 1
+- fire: 2
+- injury: 2
+- person_in_distress: 1
+- unclassified_after_two_tries: 2
+- weapon: 2
+
+Per-chat results:
+ECC-T-001: VALID noise_complaint
+ECC-T-002: VALID illegally_parked_vehicle
+ECC-T-003: VALID pothole
+ECC-T-004: HANDOFF weapon
+ECC-T-005: VALID noise_complaint
+ECC-T-006: VALID pothole
+ECC-T-007: VALID illegally_parked_vehicle
+ECC-T-008: HANDOFF injury
+ECC-T-009: VALID noise_complaint
+ECC-T-010: VALID illegally_parked_vehicle
+ECC-T-011: VALID pothole
+ECC-T-012: HANDOFF unclassified_after_two_tries
+ECC-T-013: VALID illegally_parked_vehicle
+ECC-T-014: VALID noise_complaint
+ECC-T-015: VALID pothole
+ECC-T-016: HANDOFF fire
+ECC-T-017: VALID pothole
+ECC-T-018: VALID noise_complaint
+ECC-T-019: VALID illegally_parked_vehicle
+ECC-T-020: HANDOFF danger
+ECC-T-021: VALID noise_complaint
+ECC-T-022: VALID pothole
+ECC-T-023: VALID illegally_parked_vehicle
+ECC-T-024: HANDOFF person_in_distress
+ECC-T-025: VALID illegally_parked_vehicle
+ECC-T-026: VALID noise_complaint
+ECC-T-027: VALID pothole
+ECC-T-028: HANDOFF injury
+ECC-T-029: VALID pothole
+ECC-T-030: VALID illegally_parked_vehicle
+ECC-T-031: VALID noise_complaint
+ECC-T-032: HANDOFF fire
+ECC-T-033: VALID noise_complaint
+ECC-T-034: VALID pothole
+ECC-T-035: VALID illegally_parked_vehicle
+ECC-T-036: HANDOFF weapon
+ECC-T-037: VALID illegally_parked_vehicle
+ECC-T-038: VALID pothole
+ECC-T-039: VALID noise_complaint
+ECC-T-040: HANDOFF unclassified_after_two_tries
+
+Failures:
+Zero failures.
+
+Exit code: 0
