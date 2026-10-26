@@ -72,6 +72,7 @@ def validate_csv(path: Path) -> Report:
 
     report.chats = len(groups)
     for chat_id, turns in sorted(groups.items()):
+        message_count = len(turns)
         before = len(report.failures)
         # Repeated annotations must agree exactly. Never repair the fixture or choose a last row.
         conflicts = [
@@ -80,7 +81,7 @@ def validate_csv(path: Path) -> Report:
         ]
         if conflicts:
             report.failures.append(f"{chat_id}: conflicting annotations across turns: {', '.join(conflicts)}")
-            report.results.append(f"{chat_id}: FAIL (conflicting annotations)")
+            report.results.append(f"{chat_id}: FAIL (conflicting annotations) | resident_messages={message_count}")
             continue
 
         row = turns[0]
@@ -124,9 +125,9 @@ def validate_csv(path: Path) -> Report:
                         report.failures.append(f"{chat_id} [{request_type}] {location}: {item['msg']}")
             if len(report.failures) == before:
                 report.valid += 1
-                report.results.append(f"{chat_id}: VALID {request_type}")
+                report.results.append(f"{chat_id}: VALID {request_type} | resident_messages={message_count}")
             else:
-                report.results.append(f"{chat_id}: FAIL {request_type}")
+                report.results.append(f"{chat_id}: FAIL {request_type} | resident_messages={message_count}")
         elif route == ("handoff", "handoff"):
             trigger = row["expected_handoff_trigger"]
             report.by_trigger[trigger] += 1
@@ -135,9 +136,9 @@ def validate_csv(path: Path) -> Report:
             if row["expected_request_type"] or any(row[name] for name in EXPECTED_COLUMNS):
                 report.failures.append(f"{chat_id}: handoff has routine request fields")
             status = "HANDOFF" if len(report.failures) == before else "FAIL handoff"
-            report.results.append(f"{chat_id}: {status} {trigger}")
+            report.results.append(f"{chat_id}: {status} {trigger} | resident_messages={message_count}")
         else:
-            report.results.append(f"{chat_id}: FAIL (routing labels)")
+            report.results.append(f"{chat_id}: FAIL (routing labels) | resident_messages={message_count}")
     return report
 
 

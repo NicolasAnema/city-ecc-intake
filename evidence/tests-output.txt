@@ -12,7 +12,7 @@ test_unordered_rows_work_but_duplicate_turns_fail (test_contracts.ContractsTest.
 test_unreadable_plate_accepts_explicit_null_only (test_contracts.ContractsTest.test_unreadable_plate_accepts_explicit_null_only) ... ok
 
 ----------------------------------------------------------------------
-Ran 9 tests in 0.145s
+Ran 9 tests in 0.144s
 
 OK
 

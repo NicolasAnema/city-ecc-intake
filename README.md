@@ -52,6 +52,8 @@ The requested dispatch scope is `expected_location` through `expected_callback_p
 
 [`loader.py`](src/ecc_intake/loader.py) groups all rows by `chat_id` before counting. It checks that repeated outcome, type, trigger, and dispatch annotations agree across the turns, and that turn numbers are unique and consecutive from 1. Row order does not matter.
 
+Every per-chat result keeps its status first and includes `resident_messages=<count>`, calculated as `len(turns)` for that `chat_id` group with no callback-field filter. This count covers resident messages only, including on failed chat lines.
+
 Routing requires both labels to agree: `routine` + `create_request`, or `handoff` + `handoff`. Routine payloads are validated with the model selected by `expected_request_type`. Populated fields from a different request type are reported as errors. Handoffs are counted separately and checked for a recognized trigger and absence of routine payloads. The six trigger labels come from the fixture: `weapon`, `injury`, `fire`, `danger`, `person_in_distress`, and `unclassified_after_two_tries`.
 
 The loader checks **expected structured fields**, not extraction accuracy from the resident messages. Resident text is fixture data, never executable instructions. It prints all detected failures and returns a nonzero exit code when any exist. Tests mutate temporary copies only.

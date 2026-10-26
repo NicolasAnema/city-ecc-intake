@@ -24,46 +24,46 @@ Handoff counts by trigger label:
 - weapon: 2
 
 Per-chat results:
-ECC-T-001: VALID noise_complaint
-ECC-T-002: VALID illegally_parked_vehicle
-ECC-T-003: VALID pothole
-ECC-T-004: HANDOFF weapon
-ECC-T-005: VALID noise_complaint
-ECC-T-006: VALID pothole
-ECC-T-007: VALID illegally_parked_vehicle
-ECC-T-008: HANDOFF injury
-ECC-T-009: VALID noise_complaint
-ECC-T-010: VALID illegally_parked_vehicle
-ECC-T-011: VALID pothole
-ECC-T-012: HANDOFF unclassified_after_two_tries
-ECC-T-013: VALID illegally_parked_vehicle
-ECC-T-014: VALID noise_complaint
-ECC-T-015: VALID pothole
-ECC-T-016: HANDOFF fire
-ECC-T-017: VALID pothole
-ECC-T-018: VALID noise_complaint
-ECC-T-019: VALID illegally_parked_vehicle
-ECC-T-020: HANDOFF danger
-ECC-T-021: VALID noise_complaint
-ECC-T-022: VALID pothole
-ECC-T-023: VALID illegally_parked_vehicle
-ECC-T-024: HANDOFF person_in_distress
-ECC-T-025: VALID illegally_parked_vehicle
-ECC-T-026: VALID noise_complaint
-ECC-T-027: VALID pothole
-ECC-T-028: HANDOFF injury
-ECC-T-029: VALID pothole
-ECC-T-030: VALID illegally_parked_vehicle
-ECC-T-031: VALID noise_complaint
-ECC-T-032: HANDOFF fire
-ECC-T-033: VALID noise_complaint
-ECC-T-034: VALID pothole
-ECC-T-035: VALID illegally_parked_vehicle
-ECC-T-036: HANDOFF weapon
-ECC-T-037: VALID illegally_parked_vehicle
-ECC-T-038: VALID pothole
-ECC-T-039: VALID noise_complaint
-ECC-T-040: HANDOFF unclassified_after_two_tries
+ECC-T-001: VALID noise_complaint | resident_messages=2
+ECC-T-002: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-003: VALID pothole | resident_messages=2
+ECC-T-004: HANDOFF weapon | resident_messages=2
+ECC-T-005: VALID noise_complaint | resident_messages=2
+ECC-T-006: VALID pothole | resident_messages=2
+ECC-T-007: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-008: HANDOFF injury | resident_messages=2
+ECC-T-009: VALID noise_complaint | resident_messages=2
+ECC-T-010: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-011: VALID pothole | resident_messages=2
+ECC-T-012: HANDOFF unclassified_after_two_tries | resident_messages=2
+ECC-T-013: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-014: VALID noise_complaint | resident_messages=2
+ECC-T-015: VALID pothole | resident_messages=2
+ECC-T-016: HANDOFF fire | resident_messages=2
+ECC-T-017: VALID pothole | resident_messages=2
+ECC-T-018: VALID noise_complaint | resident_messages=2
+ECC-T-019: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-020: HANDOFF danger | resident_messages=2
+ECC-T-021: VALID noise_complaint | resident_messages=2
+ECC-T-022: VALID pothole | resident_messages=2
+ECC-T-023: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-024: HANDOFF person_in_distress | resident_messages=2
+ECC-T-025: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-026: VALID noise_complaint | resident_messages=2
+ECC-T-027: VALID pothole | resident_messages=2
+ECC-T-028: HANDOFF injury | resident_messages=2
+ECC-T-029: VALID pothole | resident_messages=2
+ECC-T-030: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-031: VALID noise_complaint | resident_messages=2
+ECC-T-032: HANDOFF fire | resident_messages=2
+ECC-T-033: VALID noise_complaint | resident_messages=2
+ECC-T-034: VALID pothole | resident_messages=2
+ECC-T-035: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-036: HANDOFF weapon | resident_messages=2
+ECC-T-037: VALID illegally_parked_vehicle | resident_messages=2
+ECC-T-038: VALID pothole | resident_messages=2
+ECC-T-039: VALID noise_complaint | resident_messages=2
+ECC-T-040: HANDOFF unclassified_after_two_tries | resident_messages=2
 
 Failures:
 Zero failures.
