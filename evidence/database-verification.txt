@@ -4,12 +4,28 @@ Plan: free
 Region: ap-south-1
 Verified: 2026-10-26
 
-Applied sql/001_create_intake_tables.sql through the Supabase migration tool.
+Reran the committed sql/001_create_intake_tables.sql through the Supabase migration tool.
+SQL commit: 280b23dc83e5942e2bd1c998fc841872f1067c26
+Migration: add_intake_row_update_triggers
 Result: {"success": true}
 
 Executed sql/verify_constraints.sql against the live database.
 Result:
-PASS: three request shapes, nullable plate, false booleans, handoff, and four rejection cases
+PASS: three request shapes, nullable plate, false booleans, handoff, four rejection cases, and both row-update triggers (changed and unchanged rows)
+
+Both live triggers are enabled (pg_trigger.tgenabled = 'O'):
+CREATE TRIGGER requests_set_updated_at BEFORE UPDATE ON public.requests
+FOR EACH ROW WHEN ((old.* IS DISTINCT FROM new.*))
+EXECUTE FUNCTION set_intake_updated_at();
+
+CREATE TRIGGER handoffs_set_updated_at BEFORE UPDATE ON public.handoffs
+FOR EACH ROW WHEN ((old.* IS DISTINCT FROM new.*))
+EXECUTE FUNCTION set_intake_updated_at();
+
+For each table, verified by INSERT then UPDATE inside a rollback-only transaction:
+- Changing a field advances updated_at.
+- created_at remains unchanged.
+- An UPDATE assigning the existing value leaves updated_at unchanged.
 
 Read-back verification after rollback:
 requests row_count: 0
@@ -30,6 +46,7 @@ blocking_driveway boolean
 pothole_size text
 hazard_to_traffic boolean
 created_at timestamp with time zone
+updated_at timestamp with time zone NOT NULL
 
 Verified handoffs columns:
 id bigint
@@ -37,10 +54,18 @@ conversation_id text
 transcript text
 trigger_label text
 created_at timestamp with time zone
+updated_at timestamp with time zone NOT NULL
+
+Supabase advisors:
+Performance: no findings.
+Security: two INFO notices, RLS enabled without policies, one per table.
+These are intentional: this contract has no public API policies or agent access yet.
+Reference: https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy
 
 Actual Table Editor captures:
 supabase-requests.jpg: Definition view, showing every requests column.
-supabase-handoffs.jpg: Data view, showing every handoffs column.
+supabase-handoffs.jpg: Definition view, showing every handoffs column.
+Both screenshots show requests and handoffs in the Table Editor sidebar.
 
 Failures:
 Zero failures.
