@@ -42,5 +42,54 @@ begin
 end;
 $$;
 
-select 'PASS: three request shapes, nullable plate, false booleans, handoff, and four rejection cases' as result;
+-- Verify actual trigger execution, including unchanged rows and creation timestamps.
+do $$
+declare
+    previous_updated_at timestamptz;
+    previous_created_at timestamptz;
+    changed_updated_at timestamptz;
+    changed_created_at timestamptz;
+    unchanged_updated_at timestamptz;
+begin
+    select updated_at, created_at into strict previous_updated_at, previous_created_at
+    from public.requests where conversation_id = 'contract-check-noise';
+
+    update public.requests set noise_source = 'Updated loud music'
+    where conversation_id = 'contract-check-noise'
+    returning updated_at, created_at into strict changed_updated_at, changed_created_at;
+
+    if changed_updated_at <= previous_updated_at or changed_created_at <> previous_created_at then
+        raise exception 'FAIL: requests trigger must advance updated_at and preserve created_at';
+    end if;
+
+    update public.requests set noise_source = noise_source
+    where conversation_id = 'contract-check-noise'
+    returning updated_at into strict unchanged_updated_at;
+
+    if unchanged_updated_at <> changed_updated_at then
+        raise exception 'FAIL: requests no-op UPDATE changed updated_at';
+    end if;
+
+    select updated_at, created_at into strict previous_updated_at, previous_created_at
+    from public.handoffs where conversation_id = 'contract-check-handoff';
+
+    update public.handoffs set transcript = 'Turn 1: Resident reports smoke and a fire.'
+    where conversation_id = 'contract-check-handoff'
+    returning updated_at, created_at into strict changed_updated_at, changed_created_at;
+
+    if changed_updated_at <= previous_updated_at or changed_created_at <> previous_created_at then
+        raise exception 'FAIL: handoffs trigger must advance updated_at and preserve created_at';
+    end if;
+
+    update public.handoffs set transcript = transcript
+    where conversation_id = 'contract-check-handoff'
+    returning updated_at into strict unchanged_updated_at;
+
+    if unchanged_updated_at <> changed_updated_at then
+        raise exception 'FAIL: handoffs no-op UPDATE changed updated_at';
+    end if;
+end;
+$$;
+
+select 'PASS: three request shapes, nullable plate, false booleans, handoff, four rejection cases, and both row-update triggers (changed and unchanged rows)' as result;
 rollback;

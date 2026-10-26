@@ -1,7 +1,7 @@
--- City ECC typed intake contract. Apply once to a fresh Supabase public schema.
+-- City ECC typed intake contract. Safe to rerun on the original ECC schema.
 begin;
 
-create table public.requests (
+create table if not exists public.requests (
     id bigint generated always as identity primary key,
     request_type text not null check (request_type in (
         'noise_complaint', 'illegally_parked_vehicle', 'pothole'
@@ -35,7 +35,7 @@ create table public.requests (
 comment on column public.requests.license_plate is
     'Nullable for routine samples ECC-T-010, ECC-T-025, ECC-T-037: resident cannot read the plate.';
 
-create table public.handoffs (
+create table if not exists public.handoffs (
     id bigint generated always as identity primary key,
     conversation_id text not null unique check (length(btrim(conversation_id)) > 0),
     transcript text not null check (length(btrim(transcript)) > 0),
@@ -44,6 +44,37 @@ create table public.handoffs (
     )),
     created_at timestamptz not null default now()
 );
+
+-- These additions support both a fresh install and the already-created ECC tables.
+alter table public.requests
+    add column if not exists updated_at timestamptz not null default now();
+alter table public.handoffs
+    add column if not exists updated_at timestamptz not null default now();
+
+create or replace function public.set_intake_updated_at()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $$
+begin
+    new.updated_at := pg_catalog.clock_timestamp();
+    return new;
+end;
+$$;
+
+-- A changed row gets a new timestamp; an UPDATE that changes no values does not.
+create or replace trigger requests_set_updated_at
+before update on public.requests
+for each row
+when (old.* is distinct from new.*)
+execute function public.set_intake_updated_at();
+
+create or replace trigger handoffs_set_updated_at
+before update on public.handoffs
+for each row
+when (old.* is distinct from new.*)
+execute function public.set_intake_updated_at();
 
 -- No public API access policy yet; future agent/service authorization is outside this contract.
 alter table public.requests enable row level security;

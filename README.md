@@ -46,7 +46,7 @@ All model keys are required and extra fields are rejected. `request_type` is a t
 
 `license_plate` has no default: callers must provide the key, using `None` when unreadable. Empty CSV cells become `None` in the in-memory payload, without changing the source file. All other applicable dispatch fields are populated in every routine sample. Fields for other request types are absent from that model, rather than optional catch-all fields. Callback numbers are stored as text to preserve their formatting; this contract does not verify phone reachability.
 
-The requested dispatch scope is `expected_location` through `expected_callback_phone`. `incident_observed_at` and `source_call_date` remain source metadata in the original CSV, outside these dispatch models. Database `created_at` records insertion time, not incident time.
+The requested dispatch scope is `expected_location` through `expected_callback_phone`. `incident_observed_at` and `source_call_date` remain source metadata in the original CSV, outside these dispatch models. Database `created_at` records insertion time and `updated_at` records the latest row change, not incident time.
 
 ## Loader behavior
 
@@ -65,7 +65,9 @@ The migration creates:
 - `public.requests`: request type, unique conversation ID, a column for every model field, identity ID, and creation time. A conditional constraint enforces each type's required fields and requires irrelevant fields to be null. The license plate exception matches the Pydantic model.
 - `public.handoffs`: unique conversation ID, nonblank transcript, required trigger label, identity ID, and creation time. A transcript represents the resident turns in turn-number order; the source contains resident messages only.
 
-Both tables have Row Level Security enabled, with no public API policies. Future agent access is outside this contract. The SQL is a one-time migration for a fresh schema, and intentionally fails if those tables already exist. It contains no credentials. The tables are created empty; validation does not persist the fixture.
+Both tables also have a required `updated_at timestamptz` column. The SQL defines `public.set_intake_updated_at()` and two actual PostgreSQL triggers, `requests_set_updated_at` and `handoffs_set_updated_at`. Each fires `BEFORE UPDATE FOR EACH ROW` when old and new row values differ, setting `updated_at` to the current clock time. Updates that change no values leave the timestamp alone; `created_at` stays unchanged. The constrained `handoffs.trigger_label` remains the handoff reason.
+
+Both tables have Row Level Security enabled, with no public API policies. Future agent access is outside this contract. The SQL supports a fresh schema and can be rerun on the original ECC schema: it preserves existing tables and rows, adds missing `updated_at` columns, and replaces its function and triggers. It is not a general schema-drift repair script. It contains no credentials. The tables are created empty; validation does not persist the fixture. `sql/verify_constraints.sql` exercises both triggers and the shape constraints in a transaction that is rolled back.
 
 ## Source and implementation
 
